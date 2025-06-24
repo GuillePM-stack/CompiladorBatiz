@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class MainProyect extends JFrame {
-    private JButton fileButton, sintaticButton, semainticButton, codeButton;
+    private JButton fileButton, sintaticButton;
     private JFileChooser fileChooser = new JFileChooser();
     private FileNameExtensionFilter filter;
     private JTextArea textArea;
