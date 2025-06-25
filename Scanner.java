@@ -139,7 +139,7 @@ public class Scanner {
                 break;
                     
             case JOptionPane.YES_OPTION:
-                System.exit(0);
+                // System.exit(0);
                 break;
         }
     }
