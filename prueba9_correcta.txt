@@ -1,0 +1,11 @@
+x float ;
+y float ;
+
+if x == y then
+	print x + y
+else
+	print y + x ;
+
+print x + y
+
+end

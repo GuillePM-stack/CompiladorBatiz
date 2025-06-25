@@ -1,0 +1,12 @@
+nombre1 string ;
+nombre2 string ;
+nombre3 string ;
+
+nombre1:= "Juan" ;
+nombre2:= "Perez" ;
+nombre3:= nombre1+nombre2 ;
+
+
+if(nombre3=="Juan Perez")
+    print("Hola "+nombre3) ;
+

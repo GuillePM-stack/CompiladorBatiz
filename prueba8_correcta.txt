@@ -1,0 +1,12 @@
+a int ;
+b int ;
+
+if a == b then
+	print a + b
+else
+	begin
+		if a + b then
+			a := b + a
+		else
+			b := a + b
+	end

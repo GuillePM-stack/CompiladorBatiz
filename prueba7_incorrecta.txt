@@ -1,0 +1,7 @@
+x int ;
+y string ;
+
+x:= 5;
+y:="Manzanas" ;
+
+print("Miguel se come "x,+" "+y+" a la semana") ;
