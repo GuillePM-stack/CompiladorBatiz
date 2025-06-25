@@ -1,6 +1,7 @@
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.BufferedReader;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class MainProyect extends JFrame {
-    private JButton fileButton, sintaticButton;
+    private JButton fileButton, analisisButton;
     private JFileChooser fileChooser = new JFileChooser();
     private FileNameExtensionFilter filter;
     private JTextArea textArea;
@@ -44,19 +45,19 @@ public class MainProyect extends JFrame {
         add(textArea);
 
         // Botones de sintaxis, semántica y código
-        sintaticButton = new JButton("Analizar Sintaxis");
+        analisisButton = new JButton("Analizar");
         // semainticButton = new JButton("Analizar Semántica");
         // codeButton = new JButton("Ejecutar Código");
 
-        sintaticButton.setBounds(getXButton(), (int) (getHeight() * 0.20), getWidthButton(), getHeightButton());
+        analisisButton.setBounds(getXButton(), (int) (getHeight() * 0.20), getWidthButton(), getHeightButton());
         // semainticButton.setBounds(getXButton(), (int) (getHeight() * 0.30), getWidthButton(), getHeightButton());
         // codeButton.setBounds(getXButton(), (int) (getHeight() * 0.40), getWidthButton(), getHeightButton());
 
-        add(sintaticButton);
+        add(analisisButton);
         // add(semainticButton);
         // add(codeButton);
 
-        sintaticButton.setEnabled(false);
+        analisisButton.setEnabled(false);
         // semainticButton.setEnabled(false);
         // codeButton.setEnabled(false);
 
@@ -64,7 +65,7 @@ public class MainProyect extends JFrame {
 
     void hazEscucha() {
         fileButton.addActionListener(this::ActionsButtons);
-        sintaticButton.addActionListener(this::ActionsButtons);
+        analisisButton.addActionListener(this::ActionsButtons);
     }
 
     // Métodos para obtener dimensiones y posiciones de los botones
@@ -97,7 +98,7 @@ public class MainProyect extends JFrame {
                     }
 
                     textArea.setText(content.toString());
-                    sintaticButton.setEnabled(true);
+                    analisisButton.setEnabled(true);
                     // semainticButton.setEnabled(true);
                     // codeButton.setEnabled(true);
                 } catch (IOException ex) {
@@ -106,9 +107,9 @@ public class MainProyect extends JFrame {
                 }
 
             } else {
-
+                JOptionPane.showMessageDialog(this, "No se ha seleccionado nungún archivo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-        } else if (e.getSource() == sintaticButton) {
+        } else if (e.getSource() == analisisButton) {
             System.out.println(textArea.getText());
             new Parser(textArea.getText());
         }
