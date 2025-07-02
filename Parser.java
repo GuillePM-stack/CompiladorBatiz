@@ -37,6 +37,7 @@ public class Parser {
     
     public Parser(String codigo) {  
         s = new Scanner(codigo);
+        //Chequeo de tokens validos en el scanner
         token = s.getToken(true);
         tknCode = stringToCode(token);
         p = P();
