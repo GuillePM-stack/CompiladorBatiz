@@ -87,7 +87,8 @@ public class Parser {
                 return D();
             } else {
                 error(token, "(int / float / long / double)");
-                return null;    }
+                return null;
+            }
         } else {
             return null;
         }
@@ -170,6 +171,8 @@ public class Parser {
                 error(token, "(end | ;)");
         }
     }
+
+    // Posible actualización, para las operaciones
 
     // public Expx operadores(String comp1, String comp2, int operador, int idToken,
     // Idx i1, String tipo, String simbol) {
@@ -360,7 +363,6 @@ public class Parser {
     public String getLog() {
         return log;
     }
-    // -----------------------------------------------
 
     // Recorrido de la parte izquierda del árbol y creación de la tabla de símbolos
     public void createTable() {
@@ -379,7 +381,7 @@ public class Parser {
             dx = (Declarax) tablaSimbolos.get(i);
             variable[i] = dx.s1;
             tipo[i] = dx.s2.getTypex();
-            System.out.println(variable[i] + ": " + tipo[i]); // Imprime tabla de símbolos por consola.
+            System.out.println(variable[i] + ": " + tipo[i]);
         }
 
         ArrayUtils.reverse(variable);
@@ -406,40 +408,36 @@ public class Parser {
 
     // Chequeo de tipos consultando la tabla de símbolos
     public void compatibilityCheck(String s1, String s2) {
-        Declarax elementoCompara1 = null; // Inicializar a null
-        Declarax elementoCompara2 = null; // Inicializar a null
+        Declarax elementoCompara1 = null;
+        Declarax elementoCompara2 = null;
 
         System.out.println("CHECANDO COMPATIBILIDAD ENTRE TIPOS (" + s1 + ", " + s2 + "). ");
 
-        // Buscar elementoCompara1
         for (int i = 0; i < tablaSimbolos.size(); i++) {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(i);
             if (s1.equals(temp.s1)) {
                 elementoCompara1 = temp;
-                break; // Se encontró, salir del bucle
+                break;
             }
         }
 
-        // Buscar elementoCompara2
         for (int j = 0; j < tablaSimbolos.size(); j++) {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(j);
             if (s2.equals(temp.s1)) {
                 elementoCompara2 = temp;
-                break; // Se encontró, salir del bucle
+                break;
             }
         }
 
-        // Si alguna variable no se encontró, manejar el error
         if (elementoCompara1 == null) {
             error(s1, "La variable '" + s1 + "' no ha sido declarada para la comprobación de compatibilidad.");
-            return; // Salir del método si no se encuentra
+            return;
         }
         if (elementoCompara2 == null) {
             error(s2, "La variable '" + s2 + "' no ha sido declarada para la comprobación de compatibilidad.");
-            return; // Salir del método si no se encuentra
+            return;
         }
 
-        // Obtener los tipos de los elementos encontrados
         String tipo1 = elementoCompara1.s2.getTypex();
         String tipo2 = elementoCompara2.s2.getTypex();
 
@@ -457,46 +455,40 @@ public class Parser {
 
     public boolean compatibilityTypes(String tipo1, String tipo2) {
 
-        String[] numericosValidos = { "int", "long", "float", "double" };
+        // Por si llega a haber datos no numéricos
+        // String[] numericosValidos = { "int", "long", "float", "double" };
 
-        boolean tipo1EsNumerico = java.util.Arrays.asList(numericosValidos).contains(tipo1);
-        boolean tipo2EsNumerico = java.util.Arrays.asList(numericosValidos).contains(tipo2);
+        // boolean tipo1EsNumerico =
+        // java.util.Arrays.asList(numericosValidos).contains(tipo1);
+        // boolean tipo2EsNumerico =
+        // java.util.Arrays.asList(numericosValidos).contains(tipo2);
 
-        // Si alguno de los tipos no es numérico, no se puede realizar la operación
-        if (!tipo1EsNumerico || !tipo2EsNumerico)
-            return false;
+        // if (!tipo1EsNumerico || !tipo2EsNumerico)
+        // return false;
 
-        // Si ambos son numéricos, se verifica si son del mismo tipo
         if (tipo1.equals(tipo2))
             return true;
 
-        // Si son numéricos diferentes, se verifica la compatibilidad
         return (tipo1.equals("int") && tipo2.equals("long")) ||
                 (tipo1.equals("long") && tipo2.equals("int")) ||
                 (tipo1.equals("float") && tipo2.equals("double")) ||
                 (tipo1.equals("double") && tipo2.equals("float"));
     }
 
-    public void byteCode(String tipoOperacion, String s1, String s2) { // Cambié 'tipo' a 'tipoOperacion' para evitar
-                                                                       // confusión con el array 'tipo'
+    public void byteCode(String tipoOperacion, String s1, String s2) {
         int pos1 = -1, pos2 = -1;
-        String tipo1 = null, tipo2 = null; // Inicializar a null para saber si los encontramos
-
-        // Buscar las posiciones y los tipos de s1 y s2 en tablaSimbolos
+        String tipo1 = null, tipo2 = null;
         for (int i = 0; i < tablaSimbolos.size(); i++) {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(i);
             if (s1.equals(temp.s1)) {
                 pos1 = i;
-                tipo1 = temp.s2.getTypex(); // Obtener el tipo real
+                tipo1 = temp.s2.getTypex();
             }
             if (s2.equals(temp.s1)) {
                 pos2 = i;
-                tipo2 = temp.s2.getTypex(); // Obtener el tipo real
+                tipo2 = temp.s2.getTypex();
             }
         }
-
-        // Manejar el caso donde las variables no se encuentran (aunque declarationCheck
-        // debería haberlo hecho)
         if (tipo1 == null) {
             error(s1, "La variable '" + s1 + "' no tiene un tipo definido o no fue declarada.");
             return;
@@ -506,13 +498,13 @@ public class Parser {
             return;
         }
 
-        String tipoFinal = tipoDominante(tipo1, tipo2); // Ahora tipo1 y tipo2 tendrán valores como "int", "float", etc.
+        String tipoFinal = tipoDominante(tipo1, tipo2);
         String prefix = tipoInstruccion(tipoFinal);
 
-        switch (tipoOperacion) { // Usar tipoOperacion
+        switch (tipoOperacion) {
             case "igualdad":
-                ipbc(cntIns + ": " + prefix + "load_" + pos1); // Usar prefix para load
-                ipbc(cntIns + ": " + prefix + "load_" + pos2); // Usar prefix para load
+                ipbc(cntIns + ": " + prefix + "load_" + pos1);
+                ipbc(cntIns + ": " + prefix + "load_" + pos2);
                 ipbc(cntIns + ": ifne " + (cntIns + 4));
                 jmp1 = cntBC;
                 break;
@@ -529,16 +521,15 @@ public class Parser {
                     case "resta" -> prefix + "sub";
                     case "multiplicación" -> prefix + "mul";
                     case "división" -> prefix + "div";
-                    default -> ""; // Esto no debería pasar si los casos están bien definidos
+                    default -> "";
                 };
                 ipbc(cntIns + ": " + opInstr);
-                jmp2 = cntBC; // jmp2 ahora apunta a la línea después de la operación aritmética
+                jmp2 = cntBC;
                 break;
         }
     }
 
-    // Y el otro método byteCode para asignaciones:
-    public void byteCode(String tipoOperacion, String s1) { // Cambié 'tipo' a 'tipoOperacion'
+    public void byteCode(String tipoOperacion, String s1) {
         int pos1 = -1;
         String tipo1 = null;
 
@@ -556,7 +547,7 @@ public class Parser {
             return;
         }
 
-        String prefix = tipoInstruccion(tipo1); // Para asignación, el tipo del destino es el dominante
+        String prefix = tipoInstruccion(tipo1);
 
         switch (tipoOperacion) {
             case "igual":
