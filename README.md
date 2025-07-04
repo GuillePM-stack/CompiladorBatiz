@@ -64,7 +64,3 @@
 </div>
 
 ###
-
-<img src="https://raw.githubusercontent.com/GuillePM-stack/GuillePM-stack/output/snake.svg" alt="Snake animation" />
-
-###
