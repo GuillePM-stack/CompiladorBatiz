@@ -1,0 +1,12 @@
+a int ;
+b float ;
+
+if a == b then
+	print a * b
+else
+	begin
+		if b - a then
+			a := a + b
+		else
+			b := a / b
+	end
