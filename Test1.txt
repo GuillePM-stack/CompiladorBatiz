@@ -1,0 +1,12 @@
+N1 double ;
+N2 double ;
+
+if N1 == N2 then
+	print N1 + N2
+else
+	begin
+		if N1 + N2 then
+			N1 := N2 + N2
+		else
+			N2 := N1 + N2
+	end
