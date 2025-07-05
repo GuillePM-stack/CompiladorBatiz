@@ -1,5 +1,5 @@
 a int ;
-b float ;
+b long ;
 
 if a == b then
 	print a * b

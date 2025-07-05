@@ -1,5 +1,5 @@
 x double ;
-y long ;
+y float ;
 
 if x == y then
 	print x + y

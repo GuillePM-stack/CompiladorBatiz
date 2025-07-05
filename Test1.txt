@@ -1,5 +1,5 @@
-N1 double ;
-N2 double ;
+N1 float ;
+N2 long ;
 
 if N1 == N2 then
 	print N1 + N2
