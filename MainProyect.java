@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.event.ActionEvent;
 
@@ -30,7 +32,6 @@ public class MainProyect extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
         setResizable(false);
 
         fileButton = new JButton("Selecciona tu archivo");
@@ -44,23 +45,13 @@ public class MainProyect extends JFrame {
         textArea.setBounds(0, 0, (int) (getWidth() * 0.75), (int) getHeight());
         textArea.setEditable(false);
         add(textArea);
-
-        // Botones de sintaxis, semántica y código
         analisisButton = new JButton("Analizar");
-        // semainticButton = new JButton("Analizar Semántica");
-        // codeButton = new JButton("Ejecutar Código");
 
         analisisButton.setBounds(getXButton(), (int) (getHeight() * 0.20), getWidthButton(), getHeightButton());
-        // semainticButton.setBounds(getXButton(), (int) (getHeight() * 0.30), getWidthButton(), getHeightButton());
-        // codeButton.setBounds(getXButton(), (int) (getHeight() * 0.40), getWidthButton(), getHeightButton());
-
         add(analisisButton);
-        // add(semainticButton);
-        // add(codeButton);
 
         analisisButton.setEnabled(false);
-        // semainticButton.setEnabled(false);
-        // codeButton.setEnabled(false);
+        setVisible(true);
 
     }
 
@@ -100,15 +91,14 @@ public class MainProyect extends JFrame {
 
                     textArea.setText(content.toString());
                     analisisButton.setEnabled(true);
-                    // semainticButton.setEnabled(true);
-                    // codeButton.setEnabled(true);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     textArea.setText("Error al leer el archivo: " + ex.getMessage());
                 }
 
             } else {
-                JOptionPane.showMessageDialog(this, "No se ha seleccionado nungún archivo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se ha seleccionado nungún archivo.", "Advertencia",
+                        JOptionPane.WARNING_MESSAGE);
             }
         } else if (e.getSource() == analisisButton) {
             System.out.println(textArea.getText());
@@ -118,6 +108,14 @@ public class MainProyect extends JFrame {
     }
 
     public static void main(String[] args) throws Exception {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
         new MainProyect();
+
     }
 }

@@ -117,11 +117,9 @@ public class Scanner {
                 }
             }
         }
-        // No le encontre sentido a esta parte del código, pero la dejo comentada por si
-        // acaso
-        // else if(t.length() > 1 && tokenValido) {
-        // tokenValido = false;
-        // }
+        else if(t.length() > 1 && tokenValido) {
+        tokenValido = false;
+        }
 
         return tokenValido;
     }

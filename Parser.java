@@ -513,8 +513,6 @@ public class Parser {
             case "resta":
             case "multiplicación":
             case "división":
-                ipbc(cntIns + ": " + prefix + "load_" + pos1);
-                ipbc(cntIns + ": " + prefix + "load_" + pos2);
 
                 String opInstr = switch (tipoOperacion) {
                     case "suma" -> prefix + "add";
@@ -523,6 +521,8 @@ public class Parser {
                     case "división" -> prefix + "div";
                     default -> "";
                 };
+                ipbc(cntIns + ": " + prefix + "load_" + pos1);
+                ipbc(cntIns + ": " + prefix + "load_" + pos2);
                 ipbc(cntIns + ": " + opInstr);
                 jmp2 = cntBC;
                 break;
