@@ -13,7 +13,8 @@ public class Scanner {
     private String token;
     private final String[] reservadas = {
             "if", "then", "else", "begin", "print",
-            "end", "int", "float", "double", "long" };
+            "end", "int", "float", "double", "long",
+            "while", "do" };
     private final String[] operadores = { "==", ":=", "+", "-", "/", "*" };
     private final String delimitador = ";";
 
@@ -116,9 +117,8 @@ public class Scanner {
                     tokenValido = true;
                 }
             }
-        }
-        else if(t.length() > 1 && tokenValido) {
-        tokenValido = false;
+        } else if (t.length() > 1 && tokenValido) {
+            tokenValido = false;
         }
 
         return tokenValido;

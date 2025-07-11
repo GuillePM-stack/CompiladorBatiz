@@ -13,9 +13,9 @@ public class Parser {
     String byteString;
     private Vector tablaSimbolos = new Vector();
     private final Scanner s;
-    final int ifx = 1, thenx = 2, elsex = 3, beginx = 4, endx = 5, printx = 6, semi = 7,
-            sum = 8, igual = 9, igualdad = 10, intx = 11, floatx = 12, id = 13,
-            longx = 14, doublex = 15, res = 16, div = 17, mul = 18;
+    final int ifx = 1, thenx = 2, elsex = 3, beginx = 4, endx = 5, printx = 6, semi = 7, sum = 8,
+            igual = 9, igualdad = 10, intx = 11, floatx = 12, id = 13, longx = 14, doublex = 15,
+            res = 16, div = 17, mul = 18, whilex = 19, dox = 20;
     private int tknCode, tokenEsperado;
     private String token, tokenActual, log;
 
@@ -127,6 +127,16 @@ public class Parser {
                 s2 = S();
                 return new Ifx(e1, s1, s2);
 
+                case whilex:
+                Expx condExp;
+                Statx loopBody;
+                eat(whilex);
+                condExp = E();
+                eat(dox);
+                loopBody = S();
+
+                return new Whilex(condExp, loopBody);
+
             case beginx:
                 eat(beginx);
                 S();
@@ -151,7 +161,7 @@ public class Parser {
                 return new Printx(ex);
 
             default:
-                error(token, "(if | begin | id | print)");
+                error(token, "(if | while | begin | id | print)");
                 return null;
         }
     }
@@ -343,6 +353,12 @@ public class Parser {
                 break;
             case "/":
                 codigo = div;
+                break;
+            case "while":
+                codigo = whilex;
+                break;
+            case "do":
+                codigo = dox;
                 break;
             default:
                 codigo = id;
