@@ -1,0 +1,7 @@
+varA float ;
+varB float ;
+
+whiles varA == varB do
+	begin
+    	varA := varA - varB ;
+	end

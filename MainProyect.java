@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.ImageIcon;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,6 +20,7 @@ public class MainProyect extends JFrame {
     private JFileChooser fileChooser = new JFileChooser();
     private FileNameExtensionFilter filter;
     private JTextArea textArea;
+    private ImageIcon imageIcon = new ImageIcon("img/NiggaPink.png"); // Ruta del icono 
 
     MainProyect() {
         hazInterfaz();
@@ -33,6 +35,7 @@ public class MainProyect extends JFrame {
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+        setIconImage(imageIcon.getImage()); // Icono 
 
         fileButton = new JButton("Selecciona tu archivo");
         fileButton.setBounds(getXButton(), (int) (getHeight() * 0.85), getWidthButton(), getHeightButton());
