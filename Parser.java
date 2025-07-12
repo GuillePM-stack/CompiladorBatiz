@@ -144,7 +144,7 @@ public class Parser {
                 if (sb != null)
                     statements.add(sb);
                 L(statements);
-                return new Bloquex(statements); // ✅ Retorna un bloque válido
+                return new Bloquex(statements); 
 
             case id:
                 Idx i;
@@ -180,7 +180,7 @@ public class Parser {
                 Statx next = S();
                 if (next != null)
                     statements.add(next);
-                L(statements); // sigue en el mismo bloque
+                L(statements); 
                 break;
 
             default:
