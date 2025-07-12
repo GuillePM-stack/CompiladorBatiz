@@ -127,7 +127,7 @@ public class Parser {
                 s2 = S();
                 return new Ifx(e1, s1, s2);
 
-                case whilex:
+            case whilex:
                 Expx condExp;
                 Statx loopBody;
                 eat(whilex);
@@ -139,9 +139,12 @@ public class Parser {
 
             case beginx:
                 eat(beginx);
-                S();
-                L();
-                return null;
+                Vector<Statx> statements = new Vector<>();
+                Statx sb = S();
+                if (sb != null)
+                    statements.add(sb);
+                L(statements);
+                return new Bloquex(statements); // ✅ Retorna un bloque válido
 
             case id:
                 Idx i;
@@ -166,7 +169,7 @@ public class Parser {
         }
     }
 
-    public void L() {
+    public void L(Vector<Statx> statements) {
         switch (tknCode) {
             case endx:
                 eat(endx);
@@ -174,9 +177,12 @@ public class Parser {
 
             case semi:
                 eat(semi);
-                S();
-                L();
+                Statx next = S();
+                if (next != null)
+                    statements.add(next);
+                L(statements); // sigue en el mismo bloque
                 break;
+
             default:
                 error(token, "(end | ;)");
         }
