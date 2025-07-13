@@ -102,7 +102,7 @@ public class Parser {
 
     }
 
-    public Statx S() { // return statement
+    public Statx S() { 
         switch (tknCode) {
             case ifx:
                 Expx e1;
@@ -128,28 +128,24 @@ public class Parser {
                 eat(beginx);
                 Vector<Statx> statements = new Vector<>();
                 
-                // Bucle para analizar sentencias hasta encontrar 'end'.
                 while (tknCode != endx) {
-                    Statx stmt = S(); // Analiza una sentencia.
+                    Statx stmt = S(); 
                     if (stmt != null) {
                         statements.add(stmt);
                     }
 
-                    // Después de una sentencia, esperamos un punto y coma o 'end'.
                     if (tknCode == semi) {
                         eat(semi);
-                        // Maneja el caso de un punto y coma al final, antes del 'end'.
-                        // Ejemplo: begin S1; S2; end
+                
                         if (tknCode == endx) {
                             break;
                         }
                     } else if (tknCode != endx) {
-                        // Si no es un punto y coma ni 'end', es un error de sintaxis.
                         error(token, "(; | end)");
-                        break; // Detiene el análisis de este bloque.
+                        break; 
                     }
                 }
-                eat(endx); // Consume el token 'end' final.
+                eat(endx); 
                 return new Bloquex(statements);
 
             case id:
@@ -186,7 +182,7 @@ public class Parser {
                 Statx nextStmt = S();
                 if (nextStmt != null) {
                     statements.add(nextStmt);
-                } // Llamada recursiva para continuar parseando el bloque
+                }
                 break;
             default:
                 error(token, "(end | ;)");
@@ -339,10 +335,10 @@ public class Parser {
             case "/":
                 codigo = div;
                 break;
-            case "while": // Añadido while
+            case "while": 
                 codigo = whilex;
                 break;
-            case "do": // Añadido do
+            case "do": 
                 codigo = dox;
                 break;
             default:
@@ -352,7 +348,6 @@ public class Parser {
         return codigo;
     }
 
-    // Métodos para recoger la información de los tokens para luego mostrarla
     public void setLog(String l) {
         if (log == null) {
             log = l + "\n \n";
@@ -366,12 +361,10 @@ public class Parser {
     }
     // -----------------------------------------------
 
-    // Recorrido de la parte izquierda del árbol y creación de la tabla de símbolos
     public void createTable() {
         variable = new String[tablaSimbolos.size()];
         tipo = new String[tablaSimbolos.size()];
 
-        // Imprime tabla de símbolos
         System.out.println("-----------------");
         System.out.println("TABLA DE SÍMBOLOS");
         System.out.println("-----------------");
@@ -381,17 +374,12 @@ public class Parser {
             dx = (Declarax) tablaSimbolos.get(i);
             variable[i] = dx.s1;
             tipo[i] = dx.s2.getTypex();
-            System.out.println(variable[i] + ": " + tipo[i]); // Imprime tabla de símbolos por consola.
+            System.out.println(variable[i] + ": " + tipo[i]); 
         }
-
-        // Si D() añade en el orden correcto, estas reversiones podrían no ser necesarias.
-        // ArrayUtils.reverse(variable);
-        // ArrayUtils.reverse(tipo);
 
         System.out.println("-----------------\n");
     }
 
-    // Verifica las declaraciones de las variables consultando la tabla de símbolos
     public void declarationCheck(String s) {
         boolean valido = false;
         for (int i = 0; i < tablaSimbolos.size(); i++) {
@@ -407,14 +395,12 @@ public class Parser {
         }
     }
 
-    // Chequeo de tipos consultando la tabla de símbolos
   public void compatibilityCheck(String s1, String s2) {
         Declarax elementoCompara1 = null; 
         Declarax elementoCompara2 = null; 
 
         System.out.println("CHECANDO COMPATIBILIDAD ENTRE TIPOS (" + s1 + ", " + s2 + "). ");
 
-        // Buscar elementoCompara1
         for (int i = 0; i < tablaSimbolos.size(); i++) {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(i);
             if (s1.equals(temp.s1)) {
@@ -423,7 +409,6 @@ public class Parser {
             }
         }
 
-        // Buscar elementoCompara2
         for (int j = 0; j < tablaSimbolos.size(); j++) {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(j);
             if (s2.equals(temp.s1)) {
@@ -432,7 +417,6 @@ public class Parser {
             }
         }
 
-        // Si alguna variable no se encontró, manejar el error
         if (elementoCompara1 == null) {
             error(s1, "La variable '" + s1 + "' no ha sido declarada para la comprobación de compatibilidad.");
             return; 
@@ -442,7 +426,6 @@ public class Parser {
             return; 
         }
 
-        // Obtener los tipos de los elementos encontrados
         String tipo1 = elementoCompara1.s2.getTypex();
         String tipo2 = elementoCompara2.s2.getTypex();
 
@@ -465,15 +448,12 @@ public class Parser {
         boolean tipo1EsNumerico = java.util.Arrays.asList(numericosValidos).contains(tipo1);
         boolean tipo2EsNumerico = java.util.Arrays.asList(numericosValidos).contains(tipo2);
 
-        // Si alguno de los tipos no es numérico, no se puede realizar la operación
         if (!tipo1EsNumerico || !tipo2EsNumerico)
             return false;
 
-        // Si ambos son numéricos, se verifica si son del mismo tipo
         if (tipo1.equals(tipo2))
             return true;
 
-        // Si son numéricos diferentes, se verifica la compatibilidad
         return (tipo1.equals("int") && tipo2.equals("long")) ||
                 (tipo1.equals("long") && tipo2.equals("int")) ||
                 (tipo1.equals("float") && tipo2.equals("double")) ||
@@ -485,7 +465,6 @@ public void byteCode(String tipoOperacion, String s1, String s2) {
         int pos1 = -1, pos2 = -1;
         String tipo1 = null, tipo2 = null; 
 
-        // Buscar las posiciones y los tipos de s1 y s2 en tablaSimbolos
         for (int i = 0; i < tablaSimbolos.size(); i++) {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(i);
             if (s1.equals(temp.s1)) {
@@ -498,7 +477,6 @@ public void byteCode(String tipoOperacion, String s1, String s2) {
             }
         }
 
-        // Manejar el caso donde las variables no se encuentran (aunque declarationCheck debería haberlo hecho)
         if (tipo1 == null) {
             error(s1, "La variable '" + s1 + "' no tiene un tipo definido o no fue declarada.");
             return;
