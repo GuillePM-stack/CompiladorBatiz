@@ -20,7 +20,7 @@ public class MainProyect extends JFrame {
     private JFileChooser fileChooser = new JFileChooser();
     private FileNameExtensionFilter filter;
     private JTextArea textArea;
-    private ImageIcon imageIcon = new ImageIcon("img/NiggaPink.png"); // Ruta del icono 
+    private ImageIcon imageIcon = new ImageIcon("img/blackPink.png"); 
 
     MainProyect() {
         hazInterfaz();
