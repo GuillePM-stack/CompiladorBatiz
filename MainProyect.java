@@ -28,14 +28,13 @@ public class MainProyect extends JFrame {
     }
 
     void hazInterfaz() {
-        // Configuración de la ventana
         setTitle("Compilador");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        setIconImage(imageIcon.getImage()); // Icono 
+        setIconImage(imageIcon.getImage()); 
 
         fileButton = new JButton("Selecciona tu archivo");
         fileButton.setBounds(getXButton(), (int) (getHeight() * 0.85), getWidthButton(), getHeightButton());
@@ -43,7 +42,6 @@ public class MainProyect extends JFrame {
         fileChooser.setFileFilter(filter);
         add(fileButton);
 
-        // Componentes de la ventana
         textArea = new JTextArea();
         textArea.setBounds(0, 0, (int) (getWidth() * 0.75), (int) getHeight());
         textArea.setEditable(false);
@@ -63,7 +61,6 @@ public class MainProyect extends JFrame {
         analisisButton.addActionListener(this::ActionsButtons);
     }
 
-    // Métodos para obtener dimensiones y posiciones de los botones
     int getHeightButton() {
         return (int) (getHeight() * 0.1);
     }

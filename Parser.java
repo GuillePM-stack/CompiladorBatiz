@@ -13,12 +13,11 @@ public class Parser {
     private final Scanner s;
     final int ifx = 1, thenx = 2, elsex = 3, beginx = 4, endx = 5, printx = 6, semi = 7,
             sum = 8, igual = 9, igualdad = 10, intx = 11, floatx = 12, id = 13,
-            longx = 14, doublex = 15, res = 16, div = 17, mul = 18, whilex = 19, dox = 20; // Añadido whilex y dox
+            longx = 14, doublex = 15, res = 16, div = 17, mul = 18, whilex = 19, dox = 20; 
     private int tknCode, tokenEsperado;
     private String token, tokenActual, log;
 
-    // Sección de bytecode
-    private int cntBC = 0; // Contador de lineas para el código bytecode
+    private int cntBC = 0;
     private String bc; // String temporal de bytecode
     private int jmp1, jmp2, jmp3;
     private int aux1, aux2, aux3;
@@ -359,7 +358,6 @@ public class Parser {
     public String getLog() {
         return log;
     }
-    // -----------------------------------------------
 
     public void createTable() {
         variable = new String[tablaSimbolos.size()];
