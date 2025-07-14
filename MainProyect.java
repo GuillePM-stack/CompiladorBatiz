@@ -13,6 +13,8 @@ import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 public class MainProyect extends JFrame {
@@ -20,7 +22,7 @@ public class MainProyect extends JFrame {
     private JFileChooser fileChooser = new JFileChooser();
     private FileNameExtensionFilter filter;
     private JTextArea textArea;
-    private ImageIcon imageIcon = new ImageIcon("img/blackPink.png"); 
+    private ImageIcon imageIcon = new ImageIcon("img/blackPink.png");
 
     MainProyect() {
         hazInterfaz();
@@ -33,18 +35,22 @@ public class MainProyect extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-        setIconImage(imageIcon.getImage()); 
+        setMinimumSize(new Dimension(600,600));
+        setIconImage(imageIcon.getImage());
+        getContentPane().setBackground(Color.DARK_GRAY);
 
         fileButton = new JButton("Selecciona tu archivo");
-        fileButton.setBounds(getXButton(), (int) (getHeight() * 0.85), getWidthButton(), getHeightButton());
+        fileButton.setBounds(getXButton(), (int) (getHeight() * 0.80), getWidthButton(), getHeightButton());
         filter = new FileNameExtensionFilter("Archivos de Texto (*.txt)", "txt");
         fileChooser.setFileFilter(filter);
+        fileButton.setBackground(Color.GRAY);
+        fileButton.setForeground(Color.BLACK);
         add(fileButton);
 
         textArea = new JTextArea();
         textArea.setBounds(0, 0, (int) (getWidth() * 0.75), (int) getHeight());
         textArea.setEditable(false);
+        textArea.setBackground(Color.LIGHT_GRAY);
         add(textArea);
         analisisButton = new JButton("Analizar");
 
@@ -54,6 +60,35 @@ public class MainProyect extends JFrame {
         analisisButton.setEnabled(false);
         setVisible(true);
 
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                adaptComponents();
+            }
+        });
+    }
+
+    void adaptComponents() {
+        int width = getWidth();
+        int height = getHeight();
+
+        textArea.setBounds(
+                0,
+                0,
+                (int) (width * 0.75),
+                height);
+
+        fileButton.setBounds(
+                (int) (width * 0.77),
+                (int) (height * 0.80),
+                (int) (width * 0.20),
+                (int) (height * 0.05));
+
+        analisisButton.setBounds(
+                (int) (width * 0.77),
+                (int) (height * 0.20),
+                (int) (width * 0.20),
+                (int) (height * 0.05));
     }
 
     void hazEscucha() {
@@ -62,11 +97,11 @@ public class MainProyect extends JFrame {
     }
 
     int getHeightButton() {
-        return (int) (getHeight() * 0.1);
+        return (int) (getHeight() * 0.05);
     }
 
     int getWidthButton() {
-        return (int) (getWidth() * 0.25);
+        return (int) (getWidth() * 0.20);
     }
 
     int getXButton() {
