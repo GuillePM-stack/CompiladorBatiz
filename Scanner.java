@@ -14,7 +14,7 @@ public class Scanner {
     private final String[] reservadas = {
             "if", "then", "else", "begin", "print",
             "end", "int", "float", "double", "long",
-            "while", "do" };
+            "while", "do", "repeat", "until" };
     private final String[] operadores = { "==", ":=", "+", "-", "/", "*" };
     private final String delimitador = ";";
 

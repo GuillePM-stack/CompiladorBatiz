@@ -13,7 +13,7 @@ public class Parser {
     private final Scanner s;
     final int ifx = 1, thenx = 2, elsex = 3, beginx = 4, endx = 5, printx = 6, semi = 7,
             sum = 8, igual = 9, igualdad = 10, intx = 11, floatx = 12, id = 13,
-            longx = 14, doublex = 15, res = 16, div = 17, mul = 18, whilex = 19, dox = 20; 
+            longx = 14, doublex = 15, res = 16, div = 17, mul = 18, whilex = 19, dox = 20, repeatx = 21, untilx = 22; 
     private int tknCode, tokenEsperado;
     private String token, tokenActual, log;
 
@@ -123,6 +123,15 @@ public class Parser {
                 loopBody = S(); 
                 return new Whilex(condExp, loopBody);
 
+            case repeatx:
+                Statx repeatBody;
+                Expx untilExp;
+                eat(repeatx);
+                repeatBody = S();
+                eat(untilx);
+                untilExp = E();
+                return new Repeatx(repeatBody, untilExp);
+
                case beginx:
                 eat(beginx);
                 Vector<Statx> statements = new Vector<>();
@@ -165,7 +174,7 @@ public class Parser {
                 return new Printx(ex);
 
             default:
-                error(token, "(if | while | begin | id | print)"); 
+                error(token, "(if | while | begin | repeat | until | id | print)"); 
                 return null;
         }
     }
@@ -339,6 +348,12 @@ public class Parser {
                 break;
             case "do": 
                 codigo = dox;
+                break;
+            case "repeat":
+                codigo = repeatx;
+                break;
+            case "until":
+                codigo = untilx;
                 break;
             default:
                 codigo = id;
