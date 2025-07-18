@@ -1,8 +1,8 @@
 package ArbolSintactico;
 
-public class Repeatx  extends Statx {
-    private Statx body;
+public class Repeatx extends Statx {
     private Expx condition;
+    private Statx body;
 
     public Repeatx(Statx body, Expx condition) {
         this.body = body;
@@ -15,5 +15,5 @@ public class Repeatx  extends Statx {
         obj[1] = condition;
         return obj;
     }
-    
+
 }

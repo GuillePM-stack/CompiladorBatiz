@@ -1,8 +1,6 @@
 N1 float ;
 N2 float ;
 
-repeat print N1 * N2 
-    until
-    	N1 == N2 ;
-        N1+N2 ;
-	end
+repeat 
+    print N1 * N2 
+    until N1 == N2 ;    	

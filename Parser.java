@@ -13,7 +13,7 @@ public class Parser {
     private final Scanner s;
     final int ifx = 1, thenx = 2, elsex = 3, beginx = 4, endx = 5, printx = 6, semi = 7,
             sum = 8, igual = 9, igualdad = 10, intx = 11, floatx = 12, id = 13,
-            longx = 14, doublex = 15, res = 16, div = 17, mul = 18, whilex = 19, dox = 20, repeatx = 21, untilx = 22; 
+            longx = 14, doublex = 15, res = 16, div = 17, mul = 18, whilex = 19, dox = 20, repeatx = 21, untilx = 22;
     private int tknCode, tokenEsperado;
     private String token, tokenActual, log;
 
@@ -62,22 +62,21 @@ public class Parser {
 
     public Declarax D() {
         if (tknCode == id) {
-            String varName = token; 
-            eat(id); 
+            String varName = token;
+            eat(id);
 
             if (tknCode == intx || tknCode == floatx || tknCode == longx || tknCode == doublex) {
-                Typex t = T(); 
+                Typex t = T();
                 eat(semi);
 
-               
                 tablaSimbolos.addElement(new Declarax(varName, t));
 
-                return D(); 
+                return D();
             } else {
                 return null;
             }
         } else {
-            return null; 
+            return null;
         }
     }
 
@@ -101,7 +100,7 @@ public class Parser {
 
     }
 
-    public Statx S() { 
+    public Statx S() {
         switch (tknCode) {
             case ifx:
                 Expx e1;
@@ -114,13 +113,13 @@ public class Parser {
                 s2 = S();
                 return new Ifx(e1, s1, s2);
 
-            case whilex: 
+            case whilex:
                 Expx condExp;
                 Statx loopBody;
                 eat(whilex);
                 condExp = E();
                 eat(dox);
-                loopBody = S(); 
+                loopBody = S();
                 return new Whilex(condExp, loopBody);
 
             case repeatx:
@@ -132,28 +131,28 @@ public class Parser {
                 untilExp = E();
                 return new Repeatx(repeatBody, untilExp);
 
-               case beginx:
+            case beginx:
                 eat(beginx);
                 Vector<Statx> statements = new Vector<>();
-                
+
                 while (tknCode != endx) {
-                    Statx stmt = S(); 
+                    Statx stmt = S();
                     if (stmt != null) {
                         statements.add(stmt);
                     }
 
                     if (tknCode == semi) {
                         eat(semi);
-                
                         if (tknCode == endx) {
                             break;
                         }
                     } else if (tknCode != endx) {
                         error(token, "(; | end)");
-                        break; 
+                        break;
                     }
                 }
-                eat(endx); 
+
+                eat(endx);
                 return new Bloquex(statements);
 
             case id:
@@ -161,6 +160,13 @@ public class Parser {
                 Expx e;
                 eat(id);
                 i = new Idx(tokenActual);
+
+                if (tknCode != igual && tknCode != sum && tknCode != res
+                        && tknCode != mul && tknCode != div && tknCode != igualdad) {
+                    error(token, "Después de un identificador solo se permite una asignación o una operación.");
+                    return null;
+                }
+
                 declarationCheck(tokenActual);
                 byteCode("igual", tokenActual);
                 eat(igual);
@@ -174,12 +180,12 @@ public class Parser {
                 return new Printx(ex);
 
             default:
-                error(token, "(if | while | begin | repeat | until | id | print)"); 
+                error(token, "(if | while | begin | repeat | until | id | print)");
                 return null;
         }
     }
 
-    public void L(Vector<Statx> statements) { 
+    public void L(Vector<Statx> statements) {
         switch (tknCode) {
             case endx:
                 eat(endx);
@@ -203,14 +209,14 @@ public class Parser {
 
         if (tknCode == id) {
             comp1 = token;
-            declarationCheck(comp1); 
+            declarationCheck(comp1);
             eat(id);
-            i1 = new Idx(comp1); 
+            i1 = new Idx(comp1);
             switch (stringToCode(token)) {
                 case sum:
                     eat(sum);
                     comp2 = token;
-                    eat(id); 
+                    eat(id);
                     i2 = new Idx(comp2);
                     declarationCheck(comp2);
                     compatibilityCheck(comp1, comp2);
@@ -220,7 +226,7 @@ public class Parser {
 
                 case res:
                     eat(res);
-                    comp2 = token; 
+                    comp2 = token;
                     eat(id);
                     i2 = new Idx(comp2);
                     declarationCheck(comp2);
@@ -262,7 +268,7 @@ public class Parser {
                     return new Comparax(i1, i2);
 
                 default:
-                    error(token, "(+ / == / - / * / /)"); 
+                    error(token, "(+ / == / - / * / /)");
                     return null;
             }
         } else {
@@ -343,10 +349,10 @@ public class Parser {
             case "/":
                 codigo = div;
                 break;
-            case "while": 
+            case "while":
                 codigo = whilex;
                 break;
-            case "do": 
+            case "do":
                 codigo = dox;
                 break;
             case "repeat":
@@ -387,7 +393,7 @@ public class Parser {
             dx = (Declarax) tablaSimbolos.get(i);
             variable[i] = dx.s1;
             tipo[i] = dx.s2.getTypex();
-            System.out.println(variable[i] + ": " + tipo[i]); 
+            System.out.println(variable[i] + ": " + tipo[i]);
         }
 
         System.out.println("-----------------\n");
@@ -408,9 +414,9 @@ public class Parser {
         }
     }
 
-  public void compatibilityCheck(String s1, String s2) {
-        Declarax elementoCompara1 = null; 
-        Declarax elementoCompara2 = null; 
+    public void compatibilityCheck(String s1, String s2) {
+        Declarax elementoCompara1 = null;
+        Declarax elementoCompara2 = null;
 
         System.out.println("CHECANDO COMPATIBILIDAD ENTRE TIPOS (" + s1 + ", " + s2 + "). ");
 
@@ -418,7 +424,7 @@ public class Parser {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(i);
             if (s1.equals(temp.s1)) {
                 elementoCompara1 = temp;
-                break; 
+                break;
             }
         }
 
@@ -426,17 +432,17 @@ public class Parser {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(j);
             if (s2.equals(temp.s1)) {
                 elementoCompara2 = temp;
-                break; 
+                break;
             }
         }
 
         if (elementoCompara1 == null) {
             error(s1, "La variable '" + s1 + "' no ha sido declarada para la comprobación de compatibilidad.");
-            return; 
+            return;
         }
         if (elementoCompara2 == null) {
             error(s2, "La variable '" + s2 + "' no ha sido declarada para la comprobación de compatibilidad.");
-            return; 
+            return;
         }
 
         String tipo1 = elementoCompara1.s2.getTypex();
@@ -447,8 +453,8 @@ public class Parser {
         } else {
             javax.swing.JOptionPane.showMessageDialog(null,
                     "Incompatibilidad de tipos: La operación no puede realizarse entre "
-                    + elementoCompara1.s1 + " (tipo: " + tipo1 + ") y "
-                    + elementoCompara2.s1 + " (tipo: " + tipo2 + ").",
+                            + elementoCompara1.s1 + " (tipo: " + tipo1 + ") y "
+                            + elementoCompara2.s1 + " (tipo: " + tipo2 + ").",
                     "Error Semántico",
                     javax.swing.JOptionPane.ERROR_MESSAGE);
         }
@@ -473,20 +479,19 @@ public class Parser {
                 (tipo1.equals("double") && tipo2.equals("float"));
     }
 
-  
-public void byteCode(String tipoOperacion, String s1, String s2) { 
+    public void byteCode(String tipoOperacion, String s1, String s2) {
         int pos1 = -1, pos2 = -1;
-        String tipo1 = null, tipo2 = null; 
+        String tipo1 = null, tipo2 = null;
 
         for (int i = 0; i < tablaSimbolos.size(); i++) {
             Declarax temp = (Declarax) tablaSimbolos.elementAt(i);
             if (s1.equals(temp.s1)) {
                 pos1 = i;
-                tipo1 = temp.s2.getTypex(); 
+                tipo1 = temp.s2.getTypex();
             }
             if (s2.equals(temp.s1)) {
                 pos2 = i;
-                tipo2 = temp.s2.getTypex(); 
+                tipo2 = temp.s2.getTypex();
             }
         }
 
@@ -499,13 +504,13 @@ public void byteCode(String tipoOperacion, String s1, String s2) {
             return;
         }
 
-        String tipoFinal = tipoDominante(tipo1, tipo2); 
+        String tipoFinal = tipoDominante(tipo1, tipo2);
         String prefix = tipoInstruccion(tipoFinal);
 
-        switch (tipoOperacion) { 
+        switch (tipoOperacion) {
             case "igualdad":
-                ipbc(cntIns + ": " + prefix + "load_" + pos1); 
-                ipbc(cntIns + ": " + prefix + "load_" + pos2); 
+                ipbc(cntIns + ": " + prefix + "load_" + pos1);
+                ipbc(cntIns + ": " + prefix + "load_" + pos2);
                 ipbc(cntIns + ": ifne " + (cntIns + 4));
                 jmp1 = cntBC;
                 break;
@@ -522,15 +527,15 @@ public void byteCode(String tipoOperacion, String s1, String s2) {
                     case "resta" -> prefix + "sub";
                     case "multiplicación" -> prefix + "mul";
                     case "división" -> prefix + "div";
-                    default -> ""; 
+                    default -> "";
                 };
                 ipbc(cntIns + ": " + opInstr);
-                jmp2 = cntBC; 
+                jmp2 = cntBC;
                 break;
         }
     }
 
-    public void byteCode(String tipoOperacion, String s1) { 
+    public void byteCode(String tipoOperacion, String s1) {
         int pos1 = -1;
         String tipo1 = null;
 
@@ -548,14 +553,15 @@ public void byteCode(String tipoOperacion, String s1, String s2) {
             return;
         }
 
-        String prefix = tipoInstruccion(tipo1); 
+        String prefix = tipoInstruccion(tipo1);
 
         switch (tipoOperacion) {
-            case "igual": 
-                ipbc(cntIns + ": " + prefix + "store_" + pos1); 
+            case "igual":
+                ipbc(cntIns + ": " + prefix + "store_" + pos1);
                 break;
         }
     }
+
     public String tipoInstruccion(String tipo) {
         return switch (tipo) {
             case "int" -> "i";
@@ -577,7 +583,7 @@ public void byteCode(String tipoOperacion, String s1, String s2) {
         while (cntBC < pilaBC.length && pilaBC[cntBC] != null) {
             cntBC++;
         }
-        if (cntBC < pilaBC.length) { 
+        if (cntBC < pilaBC.length) {
             cntIns++;
             pilaBC[cntBC] = ins;
             cntBC++;
