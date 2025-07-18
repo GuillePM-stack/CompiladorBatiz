@@ -137,7 +137,11 @@ public class MainProyect extends JFrame {
             }
         } else if (e.getSource() == analisisButton) {
             System.out.println(textArea.getText());
-            new Parser(textArea.getText());
+            Parser parser =  new Parser(textArea.getText());            
+            System.out.println("Bytecode generado correctamente.");
+            System.out.println("----------------------");
+            System.out.println(parser.getBytecode());
+            System.out.println("----------------------");
         }
 
     }
