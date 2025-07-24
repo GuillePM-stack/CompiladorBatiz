@@ -2,5 +2,8 @@ N1 float ;
 N2 float ;
 
 repeat 
-    print N1 * N2 
-    until N1 == N2 
+    begin
+        print N1 * N2 ;
+        N1 := N2 + N1
+    end
+until N1 == N2 
