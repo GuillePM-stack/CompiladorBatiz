@@ -35,7 +35,7 @@ public class MainProyect extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(600,600));
+        setMinimumSize(new Dimension(600, 600));
         setIconImage(imageIcon.getImage());
         getContentPane().setBackground(Color.DARK_GRAY);
 
@@ -136,8 +136,13 @@ public class MainProyect extends JFrame {
                         JOptionPane.WARNING_MESSAGE);
             }
         } else if (e.getSource() == analisisButton) {
-            System.out.println(textArea.getText());
-           new Parser(textArea.getText());            
+            new Parser(textArea.getText());
+            // System.out.println(textArea.getText());
+            // Parser parser = new Parser(textArea.getText());
+            // System.out.println("Bytecode generado correctamente.");
+            // System.out.println("----------------------");
+            // System.out.println(parser.getBytecode());
+            // System.out.println("----------------------");
         }
 
     }
